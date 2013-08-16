@@ -39,7 +39,7 @@ public class BlogController {
 
     public static void main(String[] args) throws IOException {
         if (args.length == 0) {
-            new BlogController("mongodb://localhost");
+            new BlogController("mongodb://10.1.7.63");     //dependiendo de donde se corra cambiar este parametro
         }
         else {
             new BlogController(args[0]);
