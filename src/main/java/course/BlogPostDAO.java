@@ -25,6 +25,8 @@ import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 import com.sun.org.apache.bcel.internal.generic.ACONST_NULL;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class BlogPostDAO {
@@ -37,7 +39,7 @@ public class BlogPostDAO {
     // Return a single post corresponding to a permalink
     public DBObject findByPermalink(String permalink) {
 
-        DBObject post = null;
+        DBObject post = postsCollection.findOne(new BasicDBObject("permalink",permalink));
         // XXX HW 3.2,  Work Here
 
 
@@ -49,7 +51,12 @@ public class BlogPostDAO {
     // how many posts are returned.
     public List<DBObject> findByDateDescending(int limit) {
 
-        List<DBObject> posts = null;
+        DBCursor cur = postsCollection.find().sort(new BasicDBObject("date",1)).limit(limit);
+        List<DBObject> posts = new ArrayList<DBObject>();
+        while (cur.hasNext()){
+            posts.add(cur.next());
+        }
+
         // XXX HW 3.2,  Work Here
         // Return a list of DBObjects, each one a post from the posts collection
 
@@ -65,8 +72,13 @@ public class BlogPostDAO {
         permalink = permalink.replaceAll("\\W", ""); // get rid of non alphanumeric
         permalink = permalink.toLowerCase();
 
+        List<DBObject> comments = new ArrayList<DBObject>();
 
-        BasicDBObject post = new BasicDBObject();
+        BasicDBObject post = new BasicDBObject("title",title).append("author",username)
+                .append("body",body).append("permalink",permalink).append("tags",tags)
+                .append("date",new Date()).append("comments",comments);
+
+        postsCollection.insert(post);
         // XXX HW 3.2, Work Here
         // Remember that a valid post has the following keys:
         // author, body, permalink, tags, comments, date
