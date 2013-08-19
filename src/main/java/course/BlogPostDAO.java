@@ -111,6 +111,17 @@ public class BlogPostDAO {
     public void addPostComment(final String name, final String email, final String body,
                                final String permalink) {
 
+        BasicDBObject comment = new BasicDBObject("author",name).append("email",email).append("body",body);
+
+        postsCollection.update(new BasicDBObject("permalink",permalink),
+                new BasicDBObject("$push",new BasicDBObject("comments",comment)));
+
+
+
+
+
+
+
         // XXX HW 3.3, Work Here
         // Hints:
         // - email is optional and may come in NULL. Check for that.
