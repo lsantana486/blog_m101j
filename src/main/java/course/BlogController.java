@@ -40,7 +40,7 @@ public class BlogController {
 
     public static void main(String[] args) throws IOException {
         if (args.length == 0) {
-            new BlogController("mongodb://200.26.166.241");
+            new BlogController("mongodb://admin:siul041286@paulo.mongohq.com:10062/blog"); //new BlogController("mongodb://200.26.166.241");
         }
         else {
             new BlogController(args[0]);
